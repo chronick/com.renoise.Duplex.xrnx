@@ -112,6 +112,18 @@ StepSequencer.default_options = {
     },
     value = 1,
   },
+  instrument_scheme = {
+    label = "Inst. scheme",
+    description = "each column is assigned 1 instrument (based on the instrument number)",
+    on_change = function(inst)
+      inst:_update_instrument_scheme()
+    end,
+    items = {
+      "enabled",
+      "disabled"
+    },
+    value = 2,
+  },
 }
 
 function StepSequencer:__init(display,mappings,options,config_name)
@@ -236,6 +248,7 @@ function StepSequencer:__init(display,mappings,options,config_name)
   self._update_lines_requested = false
   self._update_tracks_requested = false
   self._update_grid_requested = false
+  self._update_instrument_scheme_requested = false
 
   -- the various controls
   self._buttons = {}
@@ -270,6 +283,7 @@ function StepSequencer:start_app()
   self:_update_line_count()
   self:_update_track_count()
   self:_update_grid()
+  self:_update_instrument_scheme()
   self:_follow_track()
 
 end
@@ -623,6 +637,11 @@ function StepSequencer:on_idle()
     self:_update_transpose()
   end
   
+  if self._update_instrument_scheme_requested then
+    self._update_instrument_scheme_requested = false
+    self:_update_instrument_scheme()
+  end
+  
   if renoise.song().transport.playing then
     self:_update_position()
   else
@@ -779,6 +798,16 @@ function StepSequencer:_update_grid()
   end
 end
 
+--------------------------------------------------------------------------------
+
+function StepSequencer:_update_instrument_scheme()
+  TRACE("StepSequencer:_update_instrument_scheme()", self.options.instrument_scheme.value)
+  
+  if not self.active then
+    return
+  end
+  
+end
 
 --------------------------------------------------------------------------------
 
@@ -1013,14 +1042,20 @@ function StepSequencer:_process_grid_event(x,y, state, btn)
   
   local note = renoise.song().selected_pattern.tracks[track_idx]:line(
     line_idx).note_columns[1]
+    
+  local instrument = 0
+  if (self.options.instrument_scheme.value == 1) then
+    instrument = track_idx - 1
+  else
+    instrument = renoise.song().selected_instrument_index - 1
+  end
   
   if (state) then -- press
     self._keys_down[x][y] = true
     if (note.note_string == "OFF" or note.note_string == "---") then
       local base_note = (self._base_note-1) + 
         (self._base_octave-1)*12
-      self:_set_note(note, base_note, renoise.song().selected_instrument_index-1, 
-        self._base_volume)
+      self:_set_note(note, base_note, instrument, self._base_volume)
       self._toggle_exempt[x][y] = true
       -- and update the button ...
       self:_draw_grid_button(btn, note)
