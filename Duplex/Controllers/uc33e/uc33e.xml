@@ -88,7 +88,7 @@
           <Column>
             <Param value="CC#45" type="button" name="Play" maximum="127" minimum="0"/>
           </Column>
-          <Group name = "FFRW" orientation="horizontal">
+          <Group name="FFRW" orientation="horizontal">
             <Param value="CC#46" type="button" name="FF" maximum="127" minimum="0"/>
             <Param value="CC#47" type="button" name="RW" maximum="127" minimum="0"/>
           </Group>

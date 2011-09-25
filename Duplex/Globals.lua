@@ -314,12 +314,12 @@ end
 -- {"^Display:"} " -> show traces, starting with "Display:" only
 -- {"^ControlMap:", "^Display:"} -> show "Display:" and "ControlMap:"
 
-local _trace_filters = nil
+--local _trace_filters = nil
 --local _trace_filters = {"^Mixer"}
 --local _trace_filters = {"^Recorder","^UISlider"}
 --local _trace_filters = {"^UIButtonStrip", "^UISlider","^Browser"}
 --local _trace_filters = {"^Recorder", "^Effect","^Navigator","^Mixer","^Matrix"}
---local _trace_filters = {"^StepSequencer", "^Transport","^MidiDevice","^MessageStream","^"}
+local _trace_filters = {"^StepSequencer"}--, "^Transport","^MidiDevice","^MessageStream","^"}
 --local _trace_filters = {".*"}
 
 --------------------------------------------------------------------------------

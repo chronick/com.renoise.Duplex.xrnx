@@ -27,43 +27,37 @@ duplex_configurations:insert {
   },
 
   applications = {
-    Mixer = {
-      mappings = {
-        panning = {
-          group_name = "Encoders-3"
-        },
-        levels = {
-          group_name = "Sliders"
-        }
-      },
-      options = {
-        pre_post = 2
-      }
-    },
+   Mixer = {
+     mappings = {
+       panning = {
+         group_name = "Encoders-3"
+       },
+       levels = {
+         group_name = "Sliders"
+       }
+     },
+     options = {
+       pre_post = 2
+     }
+   },
    Effect = {
       mappings = {
         parameters = {
-          group_name= "Encoders-2",
+          group_name = "Encoders-2"
         },
---        page = {
---          group_name = "XFader",
---        },
         device = {
-          group_name = "Buttons",
+          group_name = "Buttons"
         }
-      },
-      options = {
-        
       }
-    }
-    
-  },
-  TrackSelector = {
-    mappings = {
-      select_track = {
-        group_name="FF/RW",
-      }
-    }
-  }
+   },
+   TrackSelector = {
+     mappings = {
+       select_track = {
+         group_name = "FFRW",
+       }
+     }
+   }
+           
+ }
   
 }
