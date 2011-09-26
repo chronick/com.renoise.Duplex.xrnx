@@ -52,7 +52,7 @@ duplex_configurations:insert {
    },
    TrackSelector = {
      mappings = {
-       select_track = {
+       prev_next_track = {
          group_name = "FFRW",
        }
      }

@@ -175,7 +175,7 @@
       </applications>
     </launchpad_matrix_mixer_transport>
     <launchpad_step_sequencer>
-      <autostart>false</autostart>
+      <autostart>true</autostart>
       <device_port_in/>
       <device_port_out/>
       <applications>
