@@ -184,7 +184,7 @@
             <page_size>1.0</page_size>
             <vol_dev>1.0</vol_dev>
             <line_increment>8</line_increment>
-            <instrument_scheme>1.0</instrument_scheme>
+            <instrument_scheme>2</instrument_scheme>
             <follow_track>2</follow_track>
             <humanize>2</humanize>
           </options>
