@@ -34,6 +34,9 @@ duplex_configurations:insert {
        },
        levels = {
          group_name = "Sliders"
+       },
+       master = {
+        group_name = "MasterSlider"
        }
      },
      options = {
