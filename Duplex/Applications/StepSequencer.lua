@@ -114,13 +114,13 @@ StepSequencer.default_options = {
   },
   instrument_scheme = {
     label = "Inst. scheme",
-    description = "each column is assigned 1 instrument (based on the instrument number)",
+    description = "which instrument to use",
     on_change = function(inst)
       inst:_update_instrument_scheme()
     end,
     items = {
-      "enabled",
-      "disabled"
+      "use active instrument only",
+      "1 instrument per track",
     },
     value = 2,
   },
@@ -1095,7 +1095,7 @@ end
 --------------------------------------------------------------------------------
 
 function StepSequencer:_process_grid_event(x,y, state, btn)
-  TRACE("StepSequencer:_process_grid_event()",x,y, state, btn)
+  TRACE("StepSequencer:_process_grid_event()",x,y, state, btn, self.options.instrument_scheme.value)
 
   local track_idx,line_idx = x,y
 
@@ -1114,7 +1114,7 @@ function StepSequencer:_process_grid_event(x,y, state, btn)
     line_idx).note_columns[1]
     
   local instrument = 0
-  if (self.options.instrument_scheme.value == 1) then
+  if (self.options.instrument_scheme.value == 2) then
     instrument = track_idx - 1
   else
     instrument = renoise.song().selected_instrument_index - 1
