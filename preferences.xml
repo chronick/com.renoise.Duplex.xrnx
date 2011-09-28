@@ -181,10 +181,12 @@
       <applications>
         <StepSequencer>
           <options>
-            <line_increment>8</line_increment>
             <page_size>1.0</page_size>
-            <follow_track>2</follow_track>
+            <vol_dev>1.0</vol_dev>
+            <line_increment>8</line_increment>
             <instrument_scheme>1.0</instrument_scheme>
+            <follow_track>2</follow_track>
+            <humanize>2</humanize>
           </options>
         </StepSequencer>
       </applications>
@@ -314,10 +316,12 @@
         </Navigator>
         <StepSequencer>
           <options>
-            <line_increment>8</line_increment>
             <page_size>1.0</page_size>
-            <follow_track>2</follow_track>
+            <vol_dev>1.0</vol_dev>
+            <line_increment>8</line_increment>
             <instrument_scheme>2</instrument_scheme>
+            <follow_track>2</follow_track>
+            <humanize>1.0</humanize>
           </options>
         </StepSequencer>
         <Transport>
@@ -386,10 +390,12 @@
       <applications>
         <StepSequencer>
           <options>
-            <line_increment>8</line_increment>
             <page_size>1.0</page_size>
-            <follow_track>2</follow_track>
+            <vol_dev>1.0</vol_dev>
+            <line_increment>8</line_increment>
             <instrument_scheme>2</instrument_scheme>
+            <follow_track>2</follow_track>
+            <humanize>1.0</humanize>
           </options>
         </StepSequencer>
         <Navigator>
@@ -531,7 +537,7 @@
       </applications>
     </nanokontrol_mixer_transport>
     <uc33e_mixer_effects>
-      <autostart>false</autostart>
+      <autostart>true</autostart>
       <device_port_in>UC-33 USB MIDI Controller (Port 1)</device_port_in>
       <device_port_out/>
       <applications>

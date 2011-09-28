@@ -124,6 +124,36 @@ StepSequencer.default_options = {
     },
     value = 2,
   },
+  humanize = {
+    label = "Humanize",
+    description = "notes are humanized as they are placed",
+    on_change = function(inst)
+      inst:_update_humanize()
+    end,
+    items = {
+      "disabled",
+      "enabled"
+    },
+    value = 1,
+  },
+  vol_dev = {
+    label = "Volume Dev.",
+    description = "Volume deviation when Humanize is enabled",
+        on_change = function(inst)
+      inst:_update_vol_dev()
+    end,
+    items = {
+      "1",
+      "2",
+      "4",
+      "8",
+      "16",
+      "32",
+      "64",
+      "128"
+    },
+    value = 1,
+  }
 }
 
 function StepSequencer:__init(display,mappings,options,config_name)
@@ -249,6 +279,8 @@ function StepSequencer:__init(display,mappings,options,config_name)
   self._update_tracks_requested = false
   self._update_grid_requested = false
   self._update_instrument_scheme_requested = false
+  self._update_humanize_requested = false
+  self._update_vol_dev_requested = false
 
   -- the various controls
   self._buttons = {}
@@ -284,6 +316,8 @@ function StepSequencer:start_app()
   self:_update_track_count()
   self:_update_grid()
   self:_update_instrument_scheme()
+  self:_update_humanize()
+  self:_update_vol_dev()
   self:_follow_track()
 
 end
@@ -642,6 +676,16 @@ function StepSequencer:on_idle()
     self:_update_instrument_scheme()
   end
   
+  if self._update_humanize_requested then
+    self._update_humanize_requested = false
+    self:_update_humanize()
+  end
+  
+  if self._update_vol_dev_requested then
+    self._update_vol_dev_requested = false
+    self:_update_vol_dev()
+  end
+  
   if renoise.song().transport.playing then
     self:_update_position()
   else
@@ -811,6 +855,26 @@ end
 
 --------------------------------------------------------------------------------
 
+
+function StepSequencer:_update_humanize()
+  TRACE("StepSequencer:_update_humanize()", self.options.humanize.value)
+  
+  if not self.active then
+    return
+  end
+end
+
+--------------------------------------------------------------------------------
+
+function StepSequencer:_update_vol_dev()
+  TRACE("StepSequencer:_update_vol_dev()", self.options.vol_dev.value)
+  
+  if not self.active then
+    return
+  end
+end
+--------------------------------------------------------------------------------
+
 function StepSequencer:_update_transpose()
 
   if not self.active then 
@@ -915,6 +979,12 @@ function StepSequencer:_get_page_width()
 
 end
 
+
+--------------------------------------------------------------------------------
+
+function StepSequencer:_get_vol_dev()
+  return math.pow(2,self.options.vol_dev.value-1)
+end
 
 --------------------------------------------------------------------------------
 
@@ -1050,12 +1120,24 @@ function StepSequencer:_process_grid_event(x,y, state, btn)
     instrument = renoise.song().selected_instrument_index - 1
   end
   
+  local volume, panning, delay
+  
+  if (self.options.humanize.value == 2) then
+    volume = self._base_volume + math.random(self:_get_vol_dev()*-1,self:_get_vol_dev())
+    panning = math.random(255)
+    delay = math.random(255)
+  else
+    volume = self._base_volume
+    panning = 255
+    delay = 0
+  end
+  
   if (state) then -- press
     self._keys_down[x][y] = true
     if (note.note_string == "OFF" or note.note_string == "---") then
       local base_note = (self._base_note-1) + 
         (self._base_octave-1)*12
-      self:_set_note(note, base_note, instrument, self._base_volume)
+      self:_set_note(note, base_note, instrument, volume, panning, delay)
       self._toggle_exempt[x][y] = true
       -- and update the button ...
       self:_draw_grid_button(btn, note)
@@ -1117,17 +1199,19 @@ end
 
 --------------------------------------------------------------------------------
 
-function StepSequencer:_set_note(note_obj, note, instrument, volume)
+function StepSequencer:_set_note(note_obj, note, instrument, volume, panning, delay)
   note_obj.note_value = note
   note_obj.instrument_value = instrument
   note_obj.volume_value = volume
+  note_obj.panning_value = panning
+  note_obj.delay_value = delay
 end
 
 
 --------------------------------------------------------------------------------
 
 function StepSequencer:_clear_note(note_obj)
-  self:_set_note(note_obj, 121, 255, 255)
+  self:_set_note(note_obj, 121, 255, 255, 255, 0)
 end
 
 
